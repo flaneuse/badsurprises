@@ -1,0 +1,31 @@
+Sale of livestock;; 1
+Sale of land;;;;;;;;;;;;;;;;;;;;;;;;;2
+Sale of other property;;;;;;;;;;;;;;;;;3
+Sent children to live with friends;;;;;;;; 4
+Withdrew children from school;;;;;;;;; 5
+Engaged in additional income
+generating activities;;;;;;;;;;;;6
+Received assistance from
+friends & family;;;;;;;;;;;;;;; 7
+Borrowed from friends & family;;;;;;;;;8
+Took a loan from a financial
+institution;;;;;;;;;;;;;;;;;;;; 9
+Members of the household
+migrated for work;;;;;;;;;;;;; 10
+Credited purchases;;;;;;;;;;;;;;;;;;11
+Delayed payment obligations;;;;;;;;;; 12
+Sold harvest in advance;;;;;;;;;;;;;; 13
+Reduced food consumption;;;;;;;;;;; 14
+Reduced non-food
+consumption;;;;;;;;;;;;;;;;; 15
+Relied on savings;;;;;;;;;;;;;;;;;;; 16
+Received assistance from
+NGO;;;;;;;;;;;;;;;;;;;;;;; 17
+Took advanced payment from
+employer;;;;;;;;;;;;;;;;;;;;18
+Received assistance from
+government;;;;;;;;;;;;;;;;;;19
+Was covered by insurance
+policy;;;;;;;;;;;;;;;;;;;;;;;20
+Did nothing;;;;;;;;;;;;;;;;;;;;;;;;;21
+Other (specify);;;;;;;;;;;;;;;;;;;;;;22
