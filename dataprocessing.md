@@ -6,3 +6,4 @@
 3. Coping codes and description broken into separate columns
 4. Shock codes, descriptions, as well as coping codes, manually copy/pasted into a combined tidy Excel file.
 5. Shocks and coping manually grouped into categories, and new codes assigned to be consistent across data sets.
+6. Coping categories classified as good or bad.
