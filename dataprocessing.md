@@ -5,5 +5,6 @@
 2. Shock pages extracted in Acrobat and converted into Excel sheets.
 3. Coping codes and description broken into separate columns
 4. Shock codes, descriptions, as well as coping codes, manually copy/pasted into a combined tidy Excel file.
-5. Shocks and coping manually grouped into categories, and new codes assigned to be consistent across data sets.
+5. Shocks and coping manually grouped into categories, and new codes assigned to be consistent across data sets.  
+  - coping codes based on Ethiopia code numbers with additional values.
 6. Coping categories classified as good or bad.
