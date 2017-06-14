@@ -15,4 +15,4 @@
 migration, and assistance
 
 *Bad Coping:* increases vulnerability compromising health and education 
-expenses, productive asset sales, conumsumption reductions 
+expenses, productive asset sales, consumption reductions 
