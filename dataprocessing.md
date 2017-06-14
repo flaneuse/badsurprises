@@ -13,5 +13,6 @@
 
 *Good Coping:* use of savings, credit, asset sales, additional employment, 
 migration, and assistance
-*Bad Coping:* increases vulnerabiliy* compromising health and edudcation 
+
+*Bad Coping:* increases vulnerability compromising health and edudcation 
 expenses, productive asset sales, conumsumption reductions 
