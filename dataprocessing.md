@@ -17,3 +17,10 @@ migration, and assistance
 
 *Bad Coping:* increases vulnerability compromising health and education 
 expenses, productive asset sales, consumption reduction 
+
+## Data decisions
+1. **Panel** or full sample?
+2. **Time:** How many years recall to include?
+3. **Severity:** include only most severe?
+4. **Coping:** only inlcude primary coping mechanism.
+5. ** Sample weights**: include or not?
