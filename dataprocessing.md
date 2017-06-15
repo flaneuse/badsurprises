@@ -6,5 +6,13 @@
 3. Coping codes and description broken into separate columns
 4. Shock codes, descriptions, as well as coping codes, manually copy/pasted into a combined tidy Excel file.
 5. Shocks and coping manually grouped into categories, and new codes assigned to be consistent across data sets.  
-  - coping codes based on Ethiopia code numbers with additional values.
-6. Coping categories classified as good or bad.
+    - coping codes based on Ethiopia code numbers with additional values.
+6. Coping categories classified as good or bad:
+   From [Heltberg et al., 2013]
+(http://siteresources.worldbank.org/EXTNWDR2013/Resources/8258024-1352909193861/8936935-1356011448215/8986901-1380568255405/WDR15_bp_What_are_the_Sources_of_Risk_Oviedo.pdf)
+
+*Good Coping:* use of savings, credit, asset sales, additional employment, 
+migration, and assistance
+
+*Bad Coping:* increases vulnerability compromising health and education 
+expenses, productive asset sales, consumption reduction 
