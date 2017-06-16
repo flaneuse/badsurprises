@@ -24,3 +24,4 @@ expenses, productive asset sales, consumption reduction
 3. **Severity:** include only most severe?
 4. **Coping:** only inlcude primary coping mechanism.
 5. ** Sample weights**: include or not?
+6. **Shock Frequency**: If a shock happened in 2014 and 2016, counted as two separate shocks.
