@@ -12,6 +12,8 @@ library(haven) # version 1.0.0
 library(lubridate) # version 1.6.0
 library(stringr) # version 1.2.0
 library(readxl) # version 1.0.0
+library(data.table)
+library(tidytext)
 
 source('R/factorize.R')
 
@@ -96,7 +98,10 @@ geo = read_dta(paste0(svy_dir, geo_file))
 
 # import shock classification tables --------------------------------------
 shk_dict = read_excel(paste0(base_dir, 'processeddata/shock_codes.xlsx')) %>% 
-  filter(survey_id == svy_id)
+  filter(survey_id == svy_id) %>% 
+  select(-variable, -description_full) %>% 
+  mutate(shk_id = as.numeric(shk_id),
+         description = str_replace_all(description, "[!#$%()*,.:;<=>@^_`|~.{}]", '')) # remove special characters.
 
 
 # import shock info -------------------------------------------------------
@@ -113,9 +118,10 @@ shk = shk_raw %>%
          # shocks
          shock_cd, shock_desc,
          s15aq1, s15aq2, contains('s15aq3'), s15aq4, s15aq5a
-         ) %>% 
+  ) %>% 
   mutate(shk_id = shock_cd,
-         shk_desc = shock_desc,
+         shk_desc = str_trim(str_to_lower(shock_desc)),
+         shk_desc = str_replace_all(shk_desc, "[!#$%()*,.:;<=>@^_`|~.{}]", ''),
          # Did shock happen in last 2 y (since 2014)?
          shocked = ifelse(s15aq1 == 1, 1, ifelse(s15aq1 == 2, 0, NA)),
          shk_freq = s15aq2,
@@ -127,22 +133,66 @@ shk = shk_raw %>%
          cope_id = s15aq5a
   )
 
-shk = shk 
-x=x%>% gather(shk_year, shk_year_val, `2014`)
+shk14 = shk %>% 
+  mutate(shk_year = 2014) %>%
+  rename(shk_year_val = `2014`) %>% 
+  select(-`2015`, -`2016`)
+
+shk15 = shk %>% 
+  mutate(shk_year = 2015) %>%
+  rename(shk_year_val = `2015`) %>% 
+  select(-`2014`, -`2016`)
+
+shk16 = shk %>% 
+  mutate(shk_year = 2016) %>%
+  rename(shk_year_val = `2016`) %>% 
+  select(-`2015`, -`2014`)
+
+
+shk = bind_rows(shk14, shk15, shk16)
 
 # remove the copies of the unmutated vars
 shk = shk %>% select(hhid, ea,  
-                   zone, state, lga, sector,
-                   shk_id, shk_desc,
-                   shocked, shk_freq, 
-                   shk_year, shk_signif,
-                   cope_id)
+                     zone, state, lga, sector,
+                     shk_id, shk_desc,
+                     shocked, shk_freq, 
+                     shk_year, shk_year_val, shk_signif,
+                     cope_id)
 
 # NOTE: shock_other contains the description of the shocks that are labeled "ohter"
 # n = 44; ignored for now, but some could be re-classified into existing categories, e.g. "death of child"
 
-# check that data labels match lookup info
 
+# classify shocks ---------------------------------------------------------
+shk = left_join(shk, shk_dict, by = 'shk_id')
+
+shk = shk %>% 
+  rowwise() %>%
+  mutate(desc_match = description %like% shk_desc)
+
+shk = shk %>% ungroup()
+
+shk %>% filter(desc_match == FALSE) %>% count(shk_desc, description)
+
+
+if(nrow(shk %>% filter(desc_match == FALSE)) > 0) {
+  warning('shock codes seem to have changed.  Investigate!')
+}
+# check that data labels match lookup info
+# NOTE: if you don't replace the special characters, %like% will fail, even if the content is the same.
+
+View(
+shk %>% 
+  filter(shk_year == 2014) %>% 
+  # collapse down to shock category level: how many times did it occur for each hh?
+  group_by(sector, hhid, cause_cat) %>% 
+  summarise(tot = sum(shocked, na.rm = TRUE)) %>% 
+  # count times each shock category occurred
+  ungroup() %>% count(sector, cause_cat, tot > 0) %>% 
+  ungroup() %>% group_by(sector, cause_cat) %>% 
+  # calculate percent of observations
+  mutate(pct = n/sum(n)) %>% filter(`tot > 0` == TRUE) %>% arrange(cause_cat,desc(n)) 
+)
 # merge data together -----------------------------------------------------
 
 
