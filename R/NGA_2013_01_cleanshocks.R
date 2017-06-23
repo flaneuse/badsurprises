@@ -1,20 +1,27 @@
-# NGA_2015_01_cleanhh.R ---------------------------------------------------
-# Module to import and clean the household-level data from the  
-# 2015 World Bank Living Standards Measurement Study (LSMS)
-# Main purpose is to bring in household-level variables for a 
-# characterization of shocks across time and geography.
-# LSMS data pulled from the World Bank data sets in mid-June 2017
-#
-# Laura Hughes, USAID | GeoCenter, lhughes@usaid.gov, 22 June 2017
+# setup --------------------------------------------------------------------
+
+svy_dir = '~/LSMS/NGA_2012_LSMS/Post Harvest Wave 2/Household/'
+base_dir = '~/GitHub/badsurprises/'
+
+country = 'NGA'
+svy_year = 2012
+svy_id = paste0(country, svy_year)
+
+library(tidyverse) # version 1.1.1
+library(haven) # version 1.0.0
+library(lubridate) # version 1.6.0
+library(stringr) # version 1.2.0
+library(readxl) # version 1.0.0
+library(data.table)
+library(tidytext)
+
+source('R/factorize.R')
 
 
-# setup -------------------------------------------------------------------
-setwd('~/GitHub/badsurprises/R/')
-source('NGA_2015_00_setup.R')
 
 
 # import household svy information ---------------------------------------
-hh_file = 'secta_harvestw3.dta'
+hh_file = 'secta_harvestw2.dta'
 
 hh_raw = read_dta(paste0(svy_dir, hh_file))
 
@@ -82,7 +89,7 @@ hh = hh %>% select(hhid, ea, wt_w1_w2_w3, wt_wave3,
 
 # import geographic info --------------------------------------------------
 
-geo_file = 'NGA_HouseholdGeovars_Y3.dta'
+geo_file = 'NGA_HouseholdGeovars_Y2.dta'
 
 geo = read_dta(paste0(svy_dir, geo_file))
 
@@ -98,7 +105,7 @@ shk_dict = read_excel(paste0(base_dir, 'processeddata/shock_codes.xlsx')) %>%
 
 
 # import shock info -------------------------------------------------------
-shk_raw = read_dta(paste0(svy_dir, 'sect15a_harvestw3.dta'))
+shk_raw = read_dta(paste0(svy_dir, 'sect15a_harvestw2.dta'))
 
 
 shk = shk_raw %>% 
@@ -186,25 +193,6 @@ shk %>%
   # calculate percent of observations
   mutate(pct = n/sum(n)) %>% filter(`tot > 0` == TRUE) %>% arrange(cause_cat,desc(n)) 
 )
-
 # merge data together -----------------------------------------------------
 
-# Merge geographic and shock data
-shk = left_join(shk, geo, by = c("hhid", "ea", "zone", "state", "lga", "sector"))
 
-# check merge went properly
-sum(is.na(geo$LAT_DD_MOD)) # latitude is the canary
-
-if (sum(is.na(shk$LAT_DD_MOD)) > 0) {
-  print('check geo/shk merge: households without latitudes found')
-  print(paste0(nrow(shk %>% filter(is.na(LAT_DD_MOD)) %>% select(hhid) %>% distinct()), ' hh not merged'))
-}
-
-x = left_join(shk, hh, by = c("hhid", "ea", "zone", "state", "lga", "sector"))
-
-sum(is.na(hh$admin1)) # admin1 is the canary
-
-if (sum(is.na(x$admin1)) > 0) {
-  print('check hh/shk merge: households did not merge')
-  print(paste0(nrow(x %>% filter(is.na(admin1)) %>% select(hhid) %>% distinct()), ' hh not merged'))
-}
