@@ -7,6 +7,7 @@
 # basic description of the household head
 #
 # LSMS data pulled from the World Bank data sets in mid-June 2017
+# http://microdata.worldbank.org/index.php/catalog/lsms
 #
 # Laura Hughes, USAID | GeoCenter, lhughes@usaid.gov, 22 June 2017
 
@@ -62,10 +63,10 @@ hh = hh_base %>%
     imonth2 = saq16m,
     iyear2 = saq16y,
     
-    idate2 = dmy(saq19),
-    iday2 = saq19d,
-    imonth2 = saq19m,
-    iyear2 = saq19y,
+    idate3 = dmy(saq19),
+    iday3 = saq19d,
+    imonth3 = saq19m,
+    iyear3 = saq19y,
     
     # rename
     enumerator = saq11, supervisor = saq12,
@@ -75,9 +76,9 @@ hh = hh_base %>%
   ) %>% 
   
   # convert labelled values to strings
-  factorize(hh_raw, 'zone', 'admin1') %>% 
-  factorize(hh_raw, 'state', 'admin2') %>% 
-  factorize(hh_raw, 'lga', 'admin3') %>% 
+  factorize(hh_base, 'zone', 'admin1') %>% 
+  factorize(hh_base, 'state', 'admin2') %>% 
+  factorize(hh_base, 'lga', 'admin3') %>% 
   # strip out number codes from region names
   mutate(admin1 = str_replace_all(admin1, '[0-9]', ''),
          admin2 = str_replace_all(admin2, '[0-9]', ''),
@@ -183,6 +184,6 @@ ptrack = track_raw %>%
          moved3 = moved_w3v2,
          contains('wt'),
          -contains('wt_wave'), # sample weight if the hh was interviewed in PH and PP for all. 
-         -contains('v1')) 
+         -contains('v1')) # post-planting weights
 
-# !!! CHECK the ptrackign gives the right number.
+# !!! CHECK the ptracking gives the right number.
